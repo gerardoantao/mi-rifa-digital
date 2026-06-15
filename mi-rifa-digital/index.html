@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Rifa Semanal 1000 - Pozos Acumulados</title>
+    <style>
+        body { font-family: Arial; text-align: center; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .buscadora { margin: 20px 0; }
+        input { padding: 10px; font-size: 18px; width: 80px; text-align: center; }
+        button { padding: 10px 20px; cursor: pointer; background: #25d366; color: white; border: none; border-radius: 5px; }
+        .info-pozo { background: #fff3cd; padding: 10px; border-radius: 8px; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎟️ Rifa Semanal 1000</h1>
+    <p>Elegí un número del 000 al 999 para participar.</p>
+    
+    <div class="buscadora">
+        <input type="text" id="inputNum" placeholder="000" maxlength="3">
+        <button onclick="buscarNumero()">Verificar</button>
+    </div>
+
+    <div class="info-pozo">
+        ⚠️ <strong>Regla de Oro:</strong> Tu premio es el 50% de lo recaudado en tu categoría. El otro 50% es ganancia limpia para el mantenimiento del pozo y mi trabajo.
+    </div>
+
+   <div style="background-color: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px dashed #cbd5e1; margin-top: 15px; font-size: 14px; text-align: left; color: #334155;">
+        📌 <strong>Datos para transferir el valor de tu categoría:</strong><br>
+        • Plataforma: <strong>Mercado Pago o Banco</strong><br>
+        • Alias: <span style="background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: bold;">seca.apache.balde.mp</span><br>
+        • Titular: <strong>Gerardo Omar Antao</strong>
+    </div>
+
+     <div style="background-color: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px dashed #cbd5e1; margin-top: 15px; font-size: 14px; text-align: left; color: #334155;">
+        📌 <strong>Datos para transferir el valor de tu categoría:</strong><br>
+        • Plataforma: <strong>Mercado Pago o Banco</strong><br>
+        • Alias: <span style="background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: bold;">TU.ALIAS.AQUÍ</span><br>
+        • Titular: <strong>Tu Nombre Completo</strong>
+    </div>
+
+    <div id="resultado" style="margin-top: 15px;"></div>
+</div>
+
+<script>
+    // LISTA DE NÚMEROS OCUPADOS (Actualizá esto desde el celu en GitHub cada vez que vendás)
+    const ocupados = ["001", "007", "123"]; 
+
+    function buscarNumero() {
+        let num = document.getElementById('inputNum').value.padStart(3, '0');
+        let res = document.getElementById('resultado');
+        
+        if (ocupados.includes(num)) {
+            res.innerHTML = `<p style="color:red">❌ El número ${num} ya está reservado. ¡Elegí otro!</p>`;
+        } else {
+            res.innerHTML = `
+                <p style="color:green">✅ ¡El número ${num} está disponible!</p>
+                <a href="https://wa.me/5491151129751?text=Hola! Quiero reservar el número ${num} para la Rifa Semanal." class="btn-enviar">Reservar por WhatsApp</a>
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
