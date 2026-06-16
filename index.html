@@ -1,131 +1,244 @@
-<!DOCTYPE html>
+
+        <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rifa Semanal 1000 - Pozos Acumulados</title>
+    <title>Gran Rifa Semanal $5000</title>
     <style>
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0f172a; /* Fondo oscuro premium, estilo casino/ganador */
+            color: #f8fafc;
         }
         .container { 
             width: 100%;
             box-sizing: border-box;
-            padding: 25px 15px;
-            background: white; 
+            padding: 20px 12px;
         }
-        h1 { font-size: 28px; color: #2c3e50; margin-top: 10px; text-align: center; }
-        p { font-size: 18px; color: #475569; line-height: 1.5; text-align: center; }
+        h1 { font-size: 28px; color: #38bdf8; text-align: center; margin: 5px 0; font-weight: 800; }
+        .sub { font-size: 16px; color: #94a3b8; text-align: center; margin-bottom: 20px; }
         
-        .buscadora { 
-            margin: 35px 0; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-        input { 
-            padding: 18px; 
-            font-size: 28px;
-            width: 80%;
-            max-width: 200px;
-            text-align: center; 
-            border: 2px solid #cbd5e1; 
-            border-radius: 12px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        }
-        button { 
-            width: 85%;
-            padding: 16px; 
-            font-size: 20px; 
-            font-weight: bold;
-            cursor: pointer; 
-            background: #25d366; 
-            color: white; 
-            border: none; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
-        }
-        .btn-enviar { 
-            display: block; 
-            width: 85%;
-            margin: 25px auto 0 auto; 
-            padding: 16px; 
-            background: #20ba5a; 
-            color: white; 
-            text-decoration: none; 
-            font-size: 18px; 
-            font-weight: bold;
-            border-radius: 12px; 
+        /* Cartel del Pozo Acumulado - Atrapante */
+        .pozo-box {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            border: 2px solid #60a5fa;
+            border-radius: 16px;
+            padding: 15px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(32, 186, 90, 0.2);
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
         }
-        .info-pozo { 
-            background: #fff3cd; 
-            padding: 15px; 
-            border-radius: 12px; 
-            font-size: 15px; 
-            margin: 20px auto;
-            width: 85%;
-            box-sizing: border-box;
-            border: 1px solid #ffe69c;
-            color: #664d03;
-            text-align: left;
+        .pozo-titulo { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #93c5fd; }
+        .pozo-monto { font-size: 32px; font-weight: bold; color: #ffffff; margin: 5px 0; }
+        
+        /* Información de reglas */
+        .info-reglas {
+            background: #1e293b;
+            border-left: 4px solid #eab308;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 25px;
             line-height: 1.4;
+        }
+
+        /* Título del Tablero */
+        .tablero-titulo { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #f1f5f9; text-align: center;}
+
+        /* Grilla de 100 números */
+        .grid-numeros {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 columnas en celular queda comodísimo */
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        .numpad {
+            background: #334155;
+            color: #f8fafc;
+            border: none;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        /* Estado Disponible */
+        .numpad.disponible:active { background: #475569; }
+        
+        /* Estado Ocupado (Rojo y deshabilitado) */
+        .numpad.ocupado {
+            background: #ef4444 !important;
+            color: #ffffff;
+            opacity: 0.8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Ventana emergente de pago (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            align-items: center; justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #1e293b;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #475569;
+            box-sizing: border-box;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        .modal-numero { font-size: 24px; color: #38bdf8; font-weight: bold; margin-bottom: 15px; }
+        
+        /* Cuadro de Datos de Transferencia */
+        .pago-datos {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed #64748b;
+            text-align: left;
+            font-size: 14px;
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        /* Botones de acción */
+        .btn-modal-enviar {
+            display: block;
+            background: #25d366;
+            color: white;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+        .btn-modal-cerrar {
+            background: transparent;
+            color: #94a3b8;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🎟️ Rifa Semanal 1000</h1>
-    <p>Elegí un número del 000 al 999 para participar.</p>
+    <h1>🎟️ RIFA SEMANAL 100</h1>
+    <p class="sub">Elegí tu número de la suerte</p>
     
-    <div class="buscadora">
-        <input type="text" id="inputNum" placeholder="000" maxlength="3">
-        <button onclick="buscarNumero()">Verificar Número</button>
+    <div class="pozo-box">
+        <div class="pozo-titulo">💰 Pozo Acumulado de la Fecha</div>
+        <div class="pozo-monto" id="montoPozo">$0</div>
+        <div style="font-size: 12px; color: #bfdbfe;">¡Si el número ganador queda vacante, el pozo se acumula!</div>
     </div>
 
-    <div class="info-pozo">
-        ⚠️ <strong>Regla de Oro:</strong> 💓 El premio final equivale al 50% de todo lo recaudado en la categoría que elijas jugar ($10, $100, $500, $2000, $5000 o $10000). ¡El otro 50% es ganancia limpia para mí! El sorteo se hace todos los domingos con el pozo acumulado.
+    <div class="info-reglas">
+        🎰 <strong>Valor del número: $5.000</strong><br>
+        El sorteo se realiza todos los domingos. El ganador se lleva el 50% de lo recaudado en la fecha (más los pozos acumulados anteriores si los hubiera).
     </div>
 
-    <div style="background-color: #f1f5f9; padding: 15px; border-radius: 12px; border: 1px dashed #cbd5e1; margin: 20px auto; font-size: 15px; text-align: left; color: #334155; width: 85%; box-sizing: border-box;">
-        📌 <strong>Datos para transferir:</strong><br>
-        • Plataforma: <strong>Mercado Pago o Banco</strong><br>
-        • Alias: <span style="background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: bold;">seca.apache.balde.mp</span><br>
-        • Titular: <strong>GERARDO OMAR ANTAO</strong>
-    </div>
+    <div class="tablero-titulo">👇 Tocá el número que querés comprar:</div>
+    
+    <div class="grid-numeros" id="tablero"></div>
+</div>
 
-    <div id="resultado" style="margin-top: 15px;"></div>
+<div class="modal" id="modalPago">
+    <div class="modal-content">
+        <div class="modal-numero" id="modalTextoNumero">Número XX</div>
+        <p style="font-size: 15px; margin-bottom: 15px; color: #cbd5e1;">Para adquirir este número, transferí el valor e informalo por WhatsApp:</p>
+        
+        <div class="pago-datos">
+            📌 <strong>Datos de Mercado Pago / Banco:</strong><br>
+            • Valor: <strong>$5.000</strong><br>
+            • Alias: <span style="background: #334155; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #38bdf8;">TU.ALIAS.AQUÍ</span><br>
+            • Titular: <strong>Tu Nombre Completo</strong>
+        </div>
+
+        <a href="#" id="linkWhatsapp" class="btn-modal-enviar" target="_blank">📲 Enviar Comprobante</a>
+        <button class="btn-modal-cerrar" onclick="cerrarModal()">Volver al tablero</button>
+    </div>
 </div>
 
 <script>
-    // LISTA DE NÚMEROS OCUPADOS (Poné los números de 3 cifras acá separados por comas)
-    const ocupados = ["001", "007", "123"]; 
+    // Configura aquí tus datos de contacto reales
+    const MI_TELEFONO = "5491123456789"; 
+    const VALOR_NUMERO = 5000;
 
-    function buscarNumero() {
-        let num = document.getElementById('inputNum').value.padStart(3, '0');
-        let res = document.getElementById('resultado');
+    // 🔴 AGREGÁ ACÁ LOS NÚMEROS OCUPADOS (Siempre de dos cifras entre comillas)
+    // Cuando te paguen uno nuevo, lo agregás a esta lista. Ejemplo: "05", "14", "99"
+    const ocupados = ["00", "07", "23"]; 
+
+    // Cálculo dinámico del pozo para motivar al jugador (Muestra el 50% de lo vendido)
+    function actualizarPozo() {
+        let totalRecaudado = ocupados.length * VALOR_NUMERO;
+        let pozoGanador = totalRecaudado * 0.50;
         
-        if (num.length > 3 || isNaN(num) || document.getElementById('inputNum').value === "") {
-            res.innerHTML = <p style="color:orange; font-weight:bold;">⚠️ Por favor, ingresá un número válido de 3 cifras.</p>;
-            return;
-        }
+        // BASE ACUMULADA: Si venís de una semana vacante, podés sumarle plata fija acá abajo cambiando el 0
+        let pozoAnteriorAcumulado = 0; 
+        
+        let pozoFinal = pozoGanador + pozoAnteriorAcumulado;
+        document.getElementById('montoPozo').innerText = "$" + pozoFinal.toLocaleString('es-AR');
+    }
 
-        if (ocupados.includes(num)) {
-            res.innerHTML = <p style="color:red; font-weight:bold; font-size:20px; margin-top:20px;">❌ El número ${num} ya está reservado.<br>¡Elegí otro!</p>;
+    // Generador automático de los 100 casilleros (del 00 al 99)
+    const tablero = document.getElementById('tablero');
+    for (let i = 0; i < 100; i++) {
+        let numFormateado = i.toString().padStart(2, '0');
+        let boton = document.createElement('button');
+        boton.innerText = numFormateado;
+        boton.classList.add('numpad');
+        
+        if (ocupados.includes(numFormateado)) {
+            boton.classList.add('ocupado');
+            boton.disabled = true;
         } else {
-            res.innerHTML = `
-                <p style="color:green; font-weight:bold; font-size:20px; margin-top:20px;">✅ ¡El número ${num} está disponible!</p>
-                <a href="https://wa.me/5491151129751?text=Hola!%20Quiero%20reservar%20el%20número%20${num}%20para%20la%20Rifa%20Semanal." class="btn-enviar">Reservar por WhatsApp</a>
-        ;
+            boton.classList.add('disponible');
+            boton.onclick = function() { abrirPago(numFormateado); };
+        }
+        tablero.appendChild(boton);
+    }
+
+    function abrirPago(num) {
+        document.getElementById('modalTextoNumero').innerText = "🎟️ Número Seleccionado: " + num;
         
+        // Creamos el enlace de WhatsApp dinámico con los espacios correctos (%20)
+        let mensaje = `Hola! Quiero reservar el número ${num} para la Rifa Semanal de $5000. Ya estoy haciendo la transferencia.`;
+        let url = `https://wa.me/${MI_TELEFONO}?text=${encodeURIComponent(mensaje)}`;
+        
+        document.getElementById('linkWhatsapp').href = url;
+        document.getElementById('modalPago').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalPago').style.display = 'none';
+    }
+
+    // Inicializar el cartel del pozo en pantalla
+    actualizarPozo();
+</script>
+
+</body>
+</html>
+
   
         }
     }
