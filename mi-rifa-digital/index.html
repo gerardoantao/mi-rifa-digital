@@ -1,63 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-     <meta name="viewport" content="width=device-width, initial-scale
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rifa Semanal 1000 - Pozos Acumulados</title>
     <style>
-         /* Eliminamos los bordes y estiramos la página al 100% */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-        /* Esta línea es el secreto para que se adapte al celular */
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f8fafc; 
-            margin: 0; 
-            padding: 10px; /* Menos espacio en los bordes para ganar espacio */
-            display: flex;
-            justify-content: center;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
         }
         .container { 
-            width: 100%; /* Ocupa todo el ancho disponible */
-            max-width: 500px; 
+            width: 100%;
+            box-sizing: border-box;
+            padding: 25px 15px;
             background: white; 
-            padding: 20px; 
-            border-radius: 16px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
         }
-        h1 { font-size: 24px; color: #2c3e50; }
-        p { font-size: 16px; }
+        h1 { font-size: 28px; color: #2c3e50; margin-top: 10px; text-align: center; }
+        p { font-size: 18px; color: #475569; line-height: 1.5; text-align: center; }
         
-        .buscadora { margin: 30px 0; }
+        .buscadora { 
+            margin: 35px 0; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
         input { 
-            padding: 15px; 
-            font-size: 24px; /* Botones y letras más grandes */
-            width: 120px; 
+            padding: 18px; 
+            font-size: 28px;
+            width: 80%;
+            max-width: 200px;
             text-align: center; 
             border: 2px solid #cbd5e1; 
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
         button { 
-            padding: 15px 25px; 
-            font-size: 18px; 
+            width: 85%;
+            padding: 16px; 
+            font-size: 20px; 
+            font-weight: bold;
             cursor: pointer; 
             background: #25d366; 
             color: white; 
             border: none; 
-            border-radius: 8px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
         }
         .btn-enviar { 
             display: block; 
-            margin-top: 20px; 
-            padding: 15px; 
-            background: #25d366; 
+            width: 85%;
+            margin: 25px auto 0 auto; 
+            padding: 16px; 
+            background: #20ba5a; 
             color: white; 
             text-decoration: none; 
             font-size: 18px; 
-            border-radius: 8px; 
+            font-weight: bold;
+            border-radius: 12px; 
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(32, 186, 90, 0.2);
+        }
+        .info-pozo { 
+            background: #fff3cd; 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            margin: 20px auto;
+            width: 85%;
+            box-sizing: border-box;
+            border: 1px solid #ffe69c;
+            color: #664d03;
+            text-align: left;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -69,37 +88,42 @@
     
     <div class="buscadora">
         <input type="text" id="inputNum" placeholder="000" maxlength="3">
-        <button onclick="buscarNumero()">Verificar</button>
+        <button onclick="buscarNumero()">Verificar Número</button>
     </div>
 
     <div class="info-pozo">
-        ⚠️ <strong>Regla de Oro:</strong> Tu premio es el 50% de lo recaudado en tu categoría. El otro 50% es ganancia limpia para el mantenimiento del pozo y mi trabajo.
+        ⚠️ <strong>Regla de Oro:</strong> El premio final equivale al 50% de todo lo recaudado en la categoría que elijas jugar ($10, $100, $500, $2000, $5000 o $10000). ¡El otro 50% es ganancia limpia para mí! El sorteo se hace todos los domingos con el pozo acumulado.
     </div>
 
-   <div style="background-color: #f1f5f9; padding: 12px; border-radius: 8px; border: 1px dashed #cbd5e1; margin-top: 15px; font-size: 14px; text-align: left; color: #334155;">
-        📌 <strong>Datos para transferir el valor de tu categoría:</strong><br>
+    <div style="background-color: #f1f5f9; padding: 15px; border-radius: 12px; border: 1px dashed #cbd5e1; margin: 20px auto; font-size: 15px; text-align: left; color: #334155; width: 85%; box-sizing: border-box;">
+        📌 <strong>Datos para transferir:</strong><br>
         • Plataforma: <strong>Mercado Pago o Banco</strong><br>
         • Alias: <span style="background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: bold;">seca.apache.balde.mp</span><br>
-        • Titular: <strong>Gerardo Omar Antao</strong>
+        • Titular: <strong>GERARDO OMAR ANTAO</strong>
     </div>
 
     <div id="resultado" style="margin-top: 15px;"></div>
 </div>
 
 <script>
-    // LISTA DE NÚMEROS OCUPADOS (Actualizá esto desde el celu en GitHub cada vez que vendás)
+    // LISTA DE NÚMEROS OCUPADOS (Poné los números de 3 cifras acá separados por comas)
     const ocupados = ["001", "007", "123"]; 
 
     function buscarNumero() {
         let num = document.getElementById('inputNum').value.padStart(3, '0');
         let res = document.getElementById('resultado');
         
+        if (num.length > 3 || isNaN(num) || document.getElementById('inputNum').value === "") {
+            res.innerHTML = <p style="color:orange; font-weight:bold;">⚠️ Por favor, ingresá un número válido de 3 cifras.</p>;
+            return;
+        }
+
         if (ocupados.includes(num)) {
-            res.innerHTML = `<p style="color:red">❌ El número ${num} ya está reservado. ¡Elegí otro!</p>`;
+            res.innerHTML = <p style="color:red; font-weight:bold; font-size:20px; margin-top:20px;">❌ El número ${num} ya está reservado.<br>¡Elegí otro!</p>;
         } else {
             res.innerHTML = `
-                <p style="color:green">✅ ¡El número ${num} está disponible!</p>
-                <a href="https://wa.me/5491151129751?text=Hola! Quiero reservar el número ${num} para la Rifa Semanal." class="btn-enviar">Reservar por WhatsApp</a>
+                <p style="color:green; font-weight:bold; font-size:20px; margin-top:20px;">✅ ¡El número ${num} está disponible!</p>
+                <a href="https://wa.me/5491151129751?text=Hola!%20Quiero%20reservar%20the%20número%20${num}%20para%20la%20Rifa%20Semanal." class="btn-enviar">Reservar por WhatsApp</a>
             `;
         }
     }
